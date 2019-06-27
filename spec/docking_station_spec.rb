@@ -28,9 +28,11 @@ describe DockingStation do
     
     describe '#dock_bike' do
       it 'rarises an error when there are more than 20 bikes in the docking station' do
-        new_station = DockingStation.new   
-          20.times { new_station.dock_bike Bike.new }   #why don't we need expect on this line
-          expect { new_station.dock_bike Bike.new }.to raise_error 'Docking station full' 
+         new_station = DockingStation.new
+         DockingStation::DEFAULT_CAPACITY.times do
+            new_station.dock_bike Bike.new  
+         end
+            expect { new_station.dock_bike Bike.new }.to raise_error 'Docking station full' 
       end
     end
 
