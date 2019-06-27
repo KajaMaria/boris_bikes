@@ -12,8 +12,14 @@ class DockingStation
     end
 
     def dock_bike(bike)
-        raise 'Docking station full' if @bikes_array.count >= 20 
+        raise 'Docking station full' if full?
         @bikes_array << bike
     end
-end
 
+    private
+
+      def full?
+       @bikes_array.count >= 20
+      end
+    end
+end
