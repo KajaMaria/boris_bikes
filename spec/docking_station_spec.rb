@@ -6,9 +6,9 @@ describe DockingStation do
         expect(subject).to respond_to :release_bike
     end
 
-    describe 'release station' do
-        it 'releases bike' do
-            expect(subject.release_bike).to be_a(Bike) 
+    describe '#release_bike' do
+        it 'raises an error if no bikes' do
+            expect { subject.release_bike }.to raise_error 'No bikes available'
         end
     end
 
