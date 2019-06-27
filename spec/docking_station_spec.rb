@@ -13,26 +13,25 @@ describe DockingStation do
     end
 
     it 'docks bike' do
-
         expect(subject).to respond_to(:dock_bike).with(1).argument
     end
 
     it 'checks if the there is a bike' do
-        expect(subject).to respond_to :bike
-    end
-
-    describe '#dock_bike' do
-      it 'does not accept bikes when full' do
-          subject.dock_bike(Bike.new)
-          expect { subject.dock_bike Bike.new }.to raise_error 'Docking station full'
-          # expect(subject.dock_bike(bike)).to eq bike
-      end
+        expect(subject).to respond_to :bikes_array
     end
 
     it 'returns docked bike' do
         bike = Bike.new
         subject.dock_bike(bike)
-        expect(subject.bike).to eq bike
+        expect(subject.bikes_array).to include bike
+    end
+    
+    describe '#dock_bike' do
+      it 'rarises an error when there are more than 20 bikes in the docking station' do
+        new_station = DockingStation.new   
+          20.times { new_station.dock_bike Bike.new }   #why don't we need expect on this line
+          expect { new_station.dock_bike Bike.new }.to raise_error 'Docking station full' 
+      end
     end
 
 end
