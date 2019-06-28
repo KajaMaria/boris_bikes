@@ -2,6 +2,9 @@ require 'docking_station'
 require 'bike'
 
 describe DockingStation do
+
+
+
     it 'responds to release_bike' do
         expect(subject).to respond_to :release_bike
     end
@@ -25,15 +28,28 @@ describe DockingStation do
         subject.dock_bike(bike)
         expect(subject.bikes_array).to include bike
     end
-    
+
     describe '#dock_bike' do
-      it 'rarises an error when there are more than 20 bikes in the docking station' do
-         new_station = DockingStation.new
-         DockingStation::DEFAULT_CAPACITY.times do
-            new_station.dock_bike Bike.new  
-         end
-            expect { new_station.dock_bike Bike.new }.to raise_error 'Docking station full' 
+      it 'rarises an error when it is full' do
+        subject.capacity.times {subject.dock_bike Bike.new}
+        expect { subject.dock_bike(Bike.new) }.to raise_error 'Docking station full'
       end
     end
 
+    describe '#initialize' do
+      subject {DockingStation.new}
+      let(:bike) { Bike.new }
+         it 'our default capacity' do
+            DockingStation::DEFAULT_CAPACITY.times do
+            subject.dock_bike(bike)
+         end
+            expect { subject.dock_bike(bike) }.to raise_error 'Docking station full'
+      end
+
+    it 'has a set variable' do
+      docking_station = DockingStation.new(50)
+      50.times { docking_station.dock_bike(bike) }
+      expect{ docking_station.dock_bike(bike)}.to raise_error 'Docking station full'
+    end
+  end 
 end
