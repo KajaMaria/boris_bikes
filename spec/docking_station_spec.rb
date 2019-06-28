@@ -1,5 +1,5 @@
 require 'docking_station'
-
+require 'bike'
 
 describe DockingStation do
 
@@ -10,14 +10,16 @@ describe DockingStation do
     end
 
     describe '#release_bike' do
+        let(:bike) {double :bike}
         it 'raises an error if no bikes' do
             expect { subject.release_bike }.to raise_error 'No bikes available'
         end
 
         it 'raises error if only broken bikes available' do
-          bike = Bike.new
-          bike.report_broken
-          subject.dock_bike(bike)
+
+
+          # bike.report_broken
+          subject.dock_bike double(:bike, broken?: true)
           expect { subject.release_bike}.to raise_error 'No bikes available'
 
         end
@@ -32,21 +34,21 @@ describe DockingStation do
     end
 
     it 'returns docked bike' do
-        bike = Bike.new
-        subject.dock_bike(bike)
-        expect(subject.bikes_array).to include bike
+        # bike = Bike.new
+        subject.dock_bike(:bike)
+        expect(subject.bikes_array).to include :bike
     end
 
     describe '#dock_bike' do
-      it 'rarises an error when it is full' do
-        subject.capacity.times {subject.dock_bike Bike.new}
-        expect { subject.dock_bike(Bike.new) }.to raise_error 'Docking station full'
+      it 'raises an error when it is full' do
+        subject.capacity.times {subject.dock_bike double :bike}
+        expect { subject.dock_bike double(:bike) }.to raise_error 'Docking station full'
       end
     end
 
     describe '#initialize' do
       subject {DockingStation.new}
-      let(:bike) { Bike.new }
+      let(:bike) { "I am a fake bike" }
          it 'our default capacity' do
             DockingStation::DEFAULT_CAPACITY.times do
             subject.dock_bike(bike)
